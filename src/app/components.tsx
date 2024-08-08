@@ -1,8 +1,7 @@
 import { AppBar, Box, Typography, Button, Toolbar } from '@mui/material';
 import Image from "next/image";
-interface ButtonAppBarProps{
-    loginFunction: () => void
-}
+import { signIn } from './firebase';
+
 
 export const ButtonAppBar = () => {
   return (
@@ -12,7 +11,7 @@ export const ButtonAppBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             AlwaysAssistant
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button onClick = {signIn} color="inherit">Login</Button>
         </Toolbar>  
       </AppBar>
     </Box>
