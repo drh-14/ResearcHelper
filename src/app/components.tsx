@@ -1,5 +1,5 @@
 import { AppBar, Box, Typography, Button, Toolbar } from '@mui/material';
-
+import Image from "next/image";
 interface ButtonAppBarProps{
     loginFunction: () => void
 }
@@ -16,6 +16,6 @@ export const ButtonAppBar = () => {
         </Toolbar>  
       </AppBar>
     </Box>
-  );
-}
+  )
+};
 

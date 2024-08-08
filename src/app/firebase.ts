@@ -16,7 +16,23 @@ const firebaseConfig = {
 
   export const signIn = async () =>{
     try{
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if(user){
+          
+        }
+
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+
+  export const logOut = async() =>{
+    try{
+      await signOut(auth);
     }
     catch(error){
       console.log(error);
