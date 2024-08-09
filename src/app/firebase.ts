@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, setDoc, getDocs, doc, collection, query } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBfPzS05M9HkADRsTbzr1Gbld2awIslmqQ",
@@ -12,7 +12,7 @@ const firebaseConfig = {
   };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
+  export const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const db = getFirestore(app);
 
@@ -20,21 +20,29 @@ const firebaseConfig = {
     try{
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        if(user){
-          
+        const email:string = (user && user.email)? user.email: '';
+        const q = query(collection(db, `user/${email}`));
+        const querySnapshot = await getDocs(q);
+        if(querySnapshot.size === 0){
+          await setDoc(doc(db, 'users', email), {
+             messages: []
+          });
         }
-
     }
     catch(error){
       console.log(error);
-    }
-  }
+    }            
+  };
+  
+
+
+
 
 
   export const logOut = async() =>{
     try{
-      await signOut(auth);
+      await new Promise(resolve => setTimeout(resolve, 200));
+      await signOut(auth), 1000;
     }
     catch(error){
       console.log(error);
