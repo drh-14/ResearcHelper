@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, signIn } from './firebase';

@@ -6,11 +6,13 @@ import { Box, Button } from '@mui/material';
 import { onAuthStateChanged, User } from  'firebase/auth';
 import { db, auth } from '../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string>('');
+  const [fullMessage, setFullMessage] = useState<string>('');
   const [messageList, setMessageList] = useState([`Hi! I provide information about research at Stony Brook and guide you to start getting involved with research. How can I help you today?`]);
   const [user, setUser] = useState<User| null>(null);
 
@@ -51,8 +53,8 @@ export default function Home() {
       const docRef = doc(db, 'users', user.email);
       const docSnap = await getDoc(docRef);
       if(docSnap.exists()){
-        const { currMessages } = docSnap.data();
-        await setDoc(docRef, { messages: [...currMessages, message] })
+        const { messages } = docSnap.data();
+        await setDoc(docRef, { messages: [...messages, message] })
       }
     }
     setMessage('');
@@ -65,9 +67,9 @@ export default function Home() {
       <div className = 'flex mt-32 justify-center flex-col gap-4 items-center'>
       <Box  className = 'w-4/12 border rounded-lg border-black' sx = {{height: '70vh'}}>
       <div className = 'flex flex-col gap-4 ml-4 mr-4 mt-4'>
-      {messageList.map((message, index) => <div key = {index} className =  {(index % 2 === 0)? 'p-4 rounded-md bg-blue-500 text-white max-w-max':
+      {messageList.map((message, index) => <div key = {index} className = {(index % 2 === 0)? 'p-4 rounded-md bg-blue-500 text-white max-w-max':
       'p-4 rounded-md bg-green-500 text-white max-w-max ml-auto'
-      }>{message}</div>             
+      }>{loading?message:<ThreeDots height = '10' color = 'white' width = '30'></ThreeDots>}</div>             
       )}
       </div>
       </Box>
