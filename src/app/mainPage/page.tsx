@@ -45,21 +45,53 @@ export default function Home() {
   loadMessages();
  }, []);
 
-  const sendMessage = async (e:React.FormEvent | React.KeyboardEvent) =>{
-    e.preventDefault();
-    if(message){
-    setMessageList(prevList => [...prevList, message]);
-    if(user && user.email){
+ const sendMessage = async (e: React.FormEvent | React.KeyboardEvent) => {
+  e.preventDefault();
+  if (message) {
+    setMessageList(prevList => [...prevList, `You: ${message}`]);
+
+    if (user && user.email) {
       const docRef = doc(db, 'users', user.email);
       const docSnap = await getDoc(docRef);
       if(docSnap.exists()){
         const { messages } = docSnap.data();
         await setDoc(docRef, { messages: [...messages, message] })
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const currMessages = data?.messages || [];
+
+        await setDoc(docRef, { messages: [...currMessages, message] }, { merge: true });
       }
     }
+
     setMessage('');
+
+    // Fetch response from OpenAI API
+    const response = await fetch('/api/openai', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ messages: [{ role: 'user', content: message }] }),
+    });
+
+    const reader = response.body?.getReader();
+    if (reader) {
+      const decoder = new TextDecoder();
+      let aiMessage = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        aiMessage += decoder.decode(value, { stream: true });
+      }
+
+      setMessageList(prevList => [...prevList, `AI: ${aiMessage.trim()}`]);
     }
-  };
+  }
+};
 
   return (
     <main>
