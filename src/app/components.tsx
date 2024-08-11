@@ -25,4 +25,3 @@ export const ButtonAppBar: React.FC<ButtonAppBarProps> = ({user}) => {
     </Box>
   )
 };
-

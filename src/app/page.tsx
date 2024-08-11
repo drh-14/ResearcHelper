@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { ButtonAppBar }  from './components';
 import { Box, Button } from '@mui/material';
 import { onAuthStateChanged, User } from  'firebase/auth';
-import { auth } from './firebase';
+import { db, auth } from './firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,14 +25,33 @@ export default function Home() {
   return () => unsubscribe();
  },[])
 
-  const loadMessages = async () =>{
-    //If user is logged in, load in messages, should be able to be accomplished with useEffect
-  };
+ const loadMessages = async () =>{
+  if(user && user.email){
+    const docRef = doc(db, 'users', user.email)
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()){
+      const { messages } = docSnap.data();
+      messages.forEach((msg:string) => setMessageList(prevList => [...prevList, msg]));
+    }
+  }
+};
 
-  const sendMessage = (e:React.FormEvent | React.KeyboardEvent) =>{
+ useEffect( () =>{
+  loadMessages();
+ }, []);
+
+  const sendMessage = async (e:React.FormEvent | React.KeyboardEvent) =>{
     e.preventDefault();
     if(message){
     setMessageList(prevList => [...prevList, message]);
+    if(user && user.email){
+      const docRef = doc(db, 'users', user.email);
+      const docSnap = await getDoc(docRef);
+      if(docSnap.exists()){
+        const { currMessages } = docSnap.data();
+        await setDoc(docRef, { messages: [...currMessages, message] })
+      }
+    }
     setMessage('');
     }
   };
