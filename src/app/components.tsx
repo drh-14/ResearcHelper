@@ -13,7 +13,7 @@ export const ButtonAppBar: React.FC<ButtonAppBarProps> = ({user}) => {
       <AppBar position="static">  
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            AlwaysAssistant
+            ResearcHelper
           </Typography>
           
           {(user && user.photoURL)?<div className = 'flex flex-col justify-center items-center invisible hover:visible'>
