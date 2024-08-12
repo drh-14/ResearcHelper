@@ -138,7 +138,7 @@ export default function Home() {
       <div className = 'flex flex-col gap-4 ml-4 mr-4 mt-4 mb-4'>
       {messageList.map((message, index) =>(index % 2 === 0)? <div ref = {endOfMessagesRef} key = {index} className =  'p-4 rounded-md bg-blue-500 text-white max-w-max'>
         {(loading && index === messageList.length - 1)? <ThreeDots height = '10' width = '30' color = 'white'></ThreeDots>: <h1>AI: {message}</h1>}</div>
-      :<div ref = {endOfMessagesRef} className = 'p-4 rounded-md bg-green-500 text-white max-w-max ml-auto'>You: {message}</div>)}
+      :<div key = {index} ref = {endOfMessagesRef} className = 'p-4 rounded-md bg-green-500 text-white max-w-max ml-auto'>You: {message}</div>)}
       </div>
 
       </Box>

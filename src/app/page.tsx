@@ -16,7 +16,7 @@ export default function Home() {
   })
 
    return () => unsubscribe();
-   }, []);
+   });
 
   return (
     <main>
@@ -27,7 +27,7 @@ export default function Home() {
       <div className='flex justify-center text-4xl'>Introducing ResearchHelper, a chatbot to help assist you with finding research</div>
       <div className = 'flex flex-col gap-4 text-2xl text-center'>
       <Box>Do you go to Stony Brook and want to get involved in research? Great!</Box>
-      <Box>But sometimes it's hard... Lots of students have no idea where to start or who to find first.</Box>
+      <Box>But sometimes it&apos;s hard... Lots of students have no idea where to start or who to find first.</Box>
       </div>
       <div className = 'text-3xl'>If this sounds like you, then ResearchHelper can help you! Get started today.</div>
       <Button onClick = {signIn} className = 'w-1/12 p-4' variant = 'contained'>Get started</Button>
