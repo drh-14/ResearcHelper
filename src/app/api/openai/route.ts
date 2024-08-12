@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: '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', 
+  apiKey: process.env.OPENAI_API_KEY, 
 });
 
 const systemPrompt: string = 'You are a chatbot assisting students from Stony Brook University find research opportunities. Please mainly focus on providing ample information about the research question that they are inquiring about and provide suggestions for adjacent information that they may be interested in; for example, if they ask about a math professor that does research in a certain field, mention other professors that do research in the same field. Also, change the language you respond in based on the language that the user speaks in.';
