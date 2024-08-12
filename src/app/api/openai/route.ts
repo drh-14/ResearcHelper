@@ -34,6 +34,7 @@ export async function POST(req: Request) {
             }
           }
         } catch (err) {
+          console.log(err);
           console.error('Stream error:', err);
           controller.error(err);
         } finally {
